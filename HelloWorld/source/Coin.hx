@@ -24,6 +24,6 @@ class Coin extends FlxSprite
 
 	function is_inside(pt:{x:Float, y:Float})
 	{
-		return (Math.pow(x - pt.x, 2) + Math.pow(y - pt.y, 2) <= Math.pow(width * .5, 2));
+		return (Math.pow(x + width * .5 - pt.x, 2) + Math.pow(y + height * .5 - pt.y, 2) <= Math.pow(width * .7, 2));
 	}
 }
