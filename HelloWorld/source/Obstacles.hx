@@ -24,4 +24,19 @@ class Obstacles extends FlxTypedGroup<ObstaclePair>
 		for (ob in obstacles)
 			ob.move();
 	}
+
+	public function stop()
+	{
+		for (ob in obstacles)
+		{
+			ob.stop();
+		}
+	}
+
+	public function repos()
+	{
+		obstacles[0].posx(FlxG.width);
+		obstacles[1].reset_func();
+		obstacles[2].reset_func();
+	}
 }

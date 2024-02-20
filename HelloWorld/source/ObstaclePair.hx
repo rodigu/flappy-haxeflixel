@@ -35,6 +35,13 @@ class ObstaclePair extends FlxTypedGroup<FlxSprite>
 		set_gap(gapy);
 	}
 
+	public function posx(nx:Float)
+	{
+		top.x = nx;
+		bottom.x = nx;
+		set_gap(FlxG.random.float(FlxG.height * .4, FlxG.height * .6));
+	}
+
 	function set_gap(gapy:Float)
 	{
 		var buffer = 88;
@@ -65,6 +72,13 @@ class ObstaclePair extends FlxTypedGroup<FlxSprite>
 	{
 		top.is_moving = true;
 		bottom.is_moving = true;
+		coin.x = bottom.x + bottom.width * .6 - coin.width * .5;
+	}
+
+	public function stop()
+	{
+		top.is_moving = false;
+		bottom.is_moving = false;
 	}
 
 	override public function update(elapsed:Float)
@@ -75,7 +89,7 @@ class ObstaclePair extends FlxTypedGroup<FlxSprite>
 		var b = Glob.PS.plane.bottom_point();
 		var t = Glob.PS.plane.top_point();
 		if (check_collide(c.x, c.y) || check_collide(b.x, b.y) || check_collide(t.x, t.y))
-			Glob.state = Glob.States.reset;
+			Glob.PS.hit();
 
 		coin.x = bottom.x + bottom.width * .6 - coin.width * .5;
 
@@ -104,6 +118,12 @@ class ObstaclePair extends FlxTypedGroup<FlxSprite>
 			bottom.reset_func();
 			top.reset_func();
 		}
+	}
+
+	public function reset_func()
+	{
+		bottom.reset_func();
+		top.reset_func();
 	}
 
 	function tri_collide(px:Float, py:Float, x1:Float, y1:Float, x2:Float, y2:Float, x3:Float, y3:Float):Bool

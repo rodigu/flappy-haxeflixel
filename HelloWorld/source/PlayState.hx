@@ -4,10 +4,13 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import flixel.ui.FlxSpriteButton;
 import flixel.util.FlxCollision;
 import flixel.util.FlxColor;
+import flixel.util.FlxSpriteUtil;
+import haxe.Timer;
 import openfl.display.FPS;
 
 class PlayState extends FlxState
@@ -71,17 +74,44 @@ class PlayState extends FlxState
 
 	public function hit()
 	{
+		if (plane.is_dead)
+			return;
 		FlxG.camera.flash(FlxColor.WHITE, .33);
+		plane.is_dead = true;
+		Timer.delay(game_over, 1500);
+		backgrounds[0].is_moving = false;
+		backgrounds[1].is_moving = false;
+		floors[0].is_moving = false;
+		floors[1].is_moving = false;
+		obstacles.stop();
+	}
+
+	public function reset()
+	{
+		plane.repos();
+		hint_hand.show();
+		obstacles.repos();
+		obstacles.stop();
+		backgrounds[0].is_moving = true;
+		backgrounds[1].is_moving = true;
+		floors[0].is_moving = true;
+		floors[1].is_moving = true;
+	}
+
+	function game_over()
+	{
+		openSubState(new ResetState());
 	}
 
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
 		score_text.text = Std.string(Glob.score);
-		if (plane.acceleration.y != 0)
+		if (plane.acceleration.y != 0 && !plane.is_dead)
 		{
 			hint_hand.hide();
 			obstacles.move();
 		}
+		FlxSpriteUtil.bound(plane);
 	}
 }

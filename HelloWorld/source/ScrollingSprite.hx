@@ -24,7 +24,7 @@ class ScrollingSprite extends FlxSprite
 		_moving_speed = moving_speed;
 		reset_func = function()
 		{
-			x = width + moving_speed;
+			x = width + _moving_speed;
 		};
 	}
 
