@@ -1,8 +1,8 @@
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.util.FlxSpriteUtil;
-import js.html.svg.PolygonElement;
+import lime.math.Vector2;
+
+using flixel.util.FlxSpriteUtil;
 
 class Plane extends FlxSprite
 {
@@ -10,9 +10,11 @@ class Plane extends FlxSprite
 	var angle_down_speed:Int;
 	var frames_ellapsed:Int;
 
+	public var is_dead:Bool;
+
 	public function new()
 	{
-		super(FlxG.width * .5 - 100, FlxG.height * .5);
+		super(FlxG.width * .5 - 100, FlxG.height * .4);
 		loadGraphic("assets/images/planes.png", true, 88, 73);
 		animation.frameIndex = 2;
 		animation.add('spin', [1, 12, 9, 12], 15);
@@ -23,11 +25,42 @@ class Plane extends FlxSprite
 		height *= .7;
 		width *= .7;
 		frames_ellapsed = 0;
+		centerOffsets(true);
+		is_dead = false;
+	}
+
+	public function center_point()
+	{
+		return {x: x + width, y: y + height * .5};
+	}
+
+	public function center()
+	{
+		return {x: x + width * .5, y: y + height * .5};
+	}
+
+	public function top_point()
+	{
+		return {x: x + width * .5, y: y};
+	}
+
+	public function bottom_point()
+	{
+		return {x: x, y: y + height};
 	}
 
 	override public function update(elapsed:Float)
 	{
-		if (FlxG.keys.justPressed.SPACE || FlxG.touches.justStarted().length > 0)
+		if (is_dead)
+		{
+			if (y < FlxG.height * 1.5)
+			{
+				acceleration.y = 900;
+			}
+
+			return;
+		}
+		if (FlxG.keys.justPressed.SPACE || FlxG.mouse.justPressedTimeInTicks == 1 || FlxG.touches.justStarted().length > 0)
 		{
 			if (acceleration.y == 0)
 			{

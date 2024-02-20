@@ -1,6 +1,5 @@
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.math.FlxPoint;
 
 class Floor extends ScrollingSprite
 {
@@ -8,5 +7,7 @@ class Floor extends ScrollingSprite
 	{
 		super('assets/images/groundGrass.png', offset, 1.5, Glob.speed);
 		y = FlxG.height - height;
+		_moving_speed = -5;
+		is_moving = true;
 	}
 }

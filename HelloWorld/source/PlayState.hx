@@ -1,13 +1,9 @@
 package;
 
 import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.system.debug.DebuggerUtil;
-import flixel.text.FlxText.FlxTextAlign;
-import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.text.FlxText;
-import js.html.svg.Rect;
+import openfl.display.FPS;
 
 class PlayState extends FlxState
 {
@@ -17,6 +13,7 @@ class PlayState extends FlxState
 	var floors:Array<Floor>;
 	var score_text:FlxText;
 	var obstacles:Obstacles;
+	var hint_hand:TapToPlay;
 
 	override public function create()
 	{
@@ -39,10 +36,6 @@ class PlayState extends FlxState
 		obstacles = new Obstacles();
 		add(obstacles);
 
-		floors = [new Floor(), new Floor(1)];
-		add(floors[0]);
-		add(floors[1]);
-
 		score_text = new FlxText(0, 0, 80, '0');
 		score_text.setFormat('assets/data/kenvector_future.ttf', 40, 0x000000);
 		score_text.autoSize = false;
@@ -53,15 +46,23 @@ class PlayState extends FlxState
 
 		plane = new Plane();
 		add(plane);
+
+		floors = [new Floor(), new Floor(1)];
+		add(floors[0]);
+		add(floors[1]);
+
+		hint_hand = new TapToPlay();
+		add(hint_hand);
 	}
 
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
 		score_text.text = Std.string(Glob.score);
-		FlxG.overlap(plane, obstacles, function(a, b)
+		if (plane.acceleration.y != 0)
 		{
-			b.alpha = .5;
-		});
+			hint_hand.hide();
+			obstacles.move();
+		}
 	}
 }

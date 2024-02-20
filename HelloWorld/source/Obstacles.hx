@@ -1,6 +1,5 @@
 import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import lime.math.Vector2;
 
 class Obstacles extends FlxTypedGroup<ObstaclePair>
 {
@@ -18,5 +17,11 @@ class Obstacles extends FlxTypedGroup<ObstaclePair>
 		obstacles[0].add_ref(obstacles[2]);
 		obstacles[1].add_ref(obstacles[0], true);
 		obstacles[2].add_ref(obstacles[1], true);
+	}
+
+	public function move()
+	{
+		for (ob in obstacles)
+			ob.move();
 	}
 }
