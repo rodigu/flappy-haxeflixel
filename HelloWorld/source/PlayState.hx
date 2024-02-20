@@ -1,8 +1,13 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
+import flixel.ui.FlxButton;
+import flixel.ui.FlxSpriteButton;
+import flixel.util.FlxCollision;
+import flixel.util.FlxColor;
 import openfl.display.FPS;
 
 class PlayState extends FlxState
@@ -14,6 +19,7 @@ class PlayState extends FlxState
 	var score_text:FlxText;
 	var obstacles:Obstacles;
 	var hint_hand:TapToPlay;
+	var pause_button:FlxButton;
 
 	override public function create()
 	{
@@ -53,6 +59,19 @@ class PlayState extends FlxState
 
 		hint_hand = new TapToPlay();
 		add(hint_hand);
+
+		pause_button = new FlxButton(FlxG.width * .8, FlxG.height * .1, 'pausa', pause);
+		add(pause_button);
+	}
+
+	function pause()
+	{
+		openSubState(new PauseState());
+	}
+
+	public function hit()
+	{
+		FlxG.camera.flash(FlxColor.WHITE, .33);
 	}
 
 	override public function update(elapsed:Float)
