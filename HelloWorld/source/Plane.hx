@@ -1,5 +1,6 @@
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.sound.FlxSound;
 import lime.math.Vector2;
 import lime.ui.Touch;
 
@@ -10,6 +11,7 @@ class Plane extends FlxSprite
 	var angle_timer:Int;
 	var angle_down_speed:Int;
 	var frames_ellapsed:Int;
+	var jump_sound:FlxSound;
 
 	public var is_dead:Bool;
 
@@ -28,6 +30,7 @@ class Plane extends FlxSprite
 		frames_ellapsed = 0;
 		centerOffsets(true);
 		is_dead = false;
+		jump_sound = FlxG.sound.load('assets/sounds/BUBBLE_OPEN.wav');
 	}
 
 	public function repos()
@@ -83,7 +86,7 @@ class Plane extends FlxSprite
 				acceleration.y = 900;
 				// velocity.x = 80;
 			}
-
+			jump_sound.play(true);
 			velocity.y = -350;
 			angle = -30;
 			angle_timer = 0;

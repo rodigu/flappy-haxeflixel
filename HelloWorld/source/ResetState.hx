@@ -8,6 +8,7 @@ class ResetState extends FlxSubState
 {
 	var continue_button:CustomButton;
 	var game_over:FlxSprite;
+	var high_score:FlxText;
 
 	public function new()
 	{
@@ -32,6 +33,15 @@ class ResetState extends FlxSubState
 		game_over.y = FlxG.height * .4;
 		game_over.scale.set(.8, .8);
 		add(game_over);
+
+		high_score = new FlxText();
+		high_score.screenCenter();
+		high_score.y = FlxG.height * .3;
+		high_score.text = Std.string(Glob.high_score);
+		high_score.setFormat('assets/data/kenvector_future.ttf', 40);
+		high_score.autoSize = true;
+		high_score.alignment = CENTER;
+		add(high_score);
 
 		super.create();
 	}
